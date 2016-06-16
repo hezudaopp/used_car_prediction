@@ -15,8 +15,18 @@ select * from car_allnet_source where site = '58';
 
 UPDATE wcar.car_allnet_source a, car_type.car_brand b
 SET a.brand_id = b.id
-WHERE a.create_time < 1443060120 AND (a.brand = b.name OR a.brand = b.liyang_name);
+WHERE a.brand = b.name;
 
 UPDATE wcar.car_allnet_source a, car_type.car_series b
-SET a.series = b.id
-WHERE a.create_time < 1443060120 AND a.brand_id = b.brand_id AND (a.series = b.name OR a.series = b.liyang_name);
+SET a.series_id = b.id
+WHERE a.brand_id = b.brand_id AND a.series = b.name;
+
+
+UPDATE wcar.car_allnet_source a
+			INNER JOIN
+				(SELECT a.id,b.id AS brand_id
+				FROM wcar.car_allnet_source a, car_type.car_brand b
+				WHERE a.create_time < 1443060120 AND (a.brand = b.name OR a.brand = b.liyang_name) 
+				LIMIT 0, 100000) b
+			ON a.id = b.id
+			SET a.brand_id = b.brand_id;

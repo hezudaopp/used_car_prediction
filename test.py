@@ -2,6 +2,7 @@
 from car_price_predict import CarPricePredict
 
 import regression as rgr
+import allnet_car_source_service as allnet
 
 DATA = [
 		# [167, [289359, 343046], 12, '2014-09', 2.68],
@@ -29,15 +30,19 @@ lwlr_3 = [95761, 76436, 94882, 59169, 90614, 28817, 99952, 53449, 79288, 170585,
 lwlr_2 = [96121, 92784, 102414, 89170, 164136, 36752, 79836, 54794, 72932, 163669, 119381, 208276, 137813, 24656, 113956, 71865]
 
 if __name__ == '__main__':
-	predict_Y = []
-	for i in range(len(DATA)):
-		car_predict = CarPricePredict(card_month=DATA[i][3], mileage=DATA[i][4], series_id=DATA[i][0], model_ids=DATA[i][1], deal_province_id=DATA[i][2])
-		if car_predict is None:
-			continue
-		result = car_predict.predict()
-		print result
-		predict_Y.append(result[0])
+	# predict_Y = []
+	# for i in range(len(DATA)):
+	# 	car_predict = CarPricePredict(card_month=DATA[i][3], mileage=DATA[i][4], series_id=DATA[i][0], model_ids=DATA[i][1], deal_province_id=DATA[i][2])
+	# 	if car_predict is None:
+	# 		continue
+	# 	result = car_predict.predict()
+	# 	print result
+	# 	predict_Y.append(result[0])
 	# print(rgr.rss_error(DATA_Y, ols_y_3))
 	# print(rgr.rss_error(DATA_Y, ols_y_2))
 	# print(rgr.rss_error(DATA_Y, lwlr_3))
 	# print(rgr.rss_error(DATA_Y, lwlr_2))
+
+	# allnet.update_brand_id()
+	# allnet.update_series_id()
+	allnet.update_null_model_id(page_size=10)

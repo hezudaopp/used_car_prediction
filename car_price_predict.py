@@ -76,7 +76,7 @@ class CarPricePredict:
 		filtered_data = np.array(filtered_data)
 		print filtered_data
 
-		filter point which is far away from predicted mean line
+		# filter point which is far away from predicted mean line
 		regr = linear_model.LinearRegression()
 		# first NUM_FEATURE columns are feature columns
 		dataX = filtered_data[:, :CarPricePredict.NUM_FEATURE]
