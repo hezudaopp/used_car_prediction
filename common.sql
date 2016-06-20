@@ -10,6 +10,11 @@ select count(*), site from car_allnet_source group by site;
 -- |   199939 | taoche  |
 -- +----------+---------+
 
+SELECT (@rowNum:=@rowNum+1) as rowNum, `id`, `series`, `series_id`, `title`, `model`, `model_id`
+FROM `car_allnet_source` a, (Select (@rowNum :=-1) ) b
+WHERE 1 AND `series_id` > 0
+LIMIT 0, 100;
+
 
 select * from car_allnet_source where site = '58';
 

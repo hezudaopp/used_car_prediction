@@ -38,11 +38,12 @@ if __name__ == '__main__':
 	# 	result = car_predict.predict()
 	# 	print result
 	# 	predict_Y.append(result[0])
-	# print(rgr.rss_error(DATA_Y, ols_y_3))
+	# print(rgr.rss_error(DATA_Y, ols_y_3))print
 	# print(rgr.rss_error(DATA_Y, ols_y_2))
 	# print(rgr.rss_error(DATA_Y, lwlr_3))
 	# print(rgr.rss_error(DATA_Y, lwlr_2))
 
 	# allnet.update_brand_id()
-	# allnet.update_series_id()
-	allnet.update_null_model_id(page_size=10)
+	# allnet.update_series_id() # 凯美瑞等车型有可能匹配错误，最好不要更新
+	# UPDATE `car_allnet_source` SET series_id = 145 where series_id = 138;
+	allnet.update_null_model_id()

@@ -1,0 +1,3 @@
+绅宝
+普拉多(进口)
+凯美瑞 # UPDATE `car_allnet_source` SET series_id = 145 where series_id = 138;
