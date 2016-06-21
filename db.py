@@ -151,19 +151,17 @@ def car_type_models_of_series_id_and_model_year(series_id, model_year):
 # 	db.close()
 # 	return dataSet
 
-# get allnet car price
-def allnet_price(model_ids, deal_province_id=None):
+def allnet_price(brand_id, series_id, model_id, province_id=None, limit=200):
 	db = wcar_pool.connection()
 	cursor = db.cursor()
 	sql = """SELECT `card_time`, `publish_time`, `kilometer`, `price`
 			FROM `car_allnet_source`
-			WHERE 1"""
-	model_ids_str = '(' + ', '.join(str(v) for v in model_ids) + ')'
-	sql += " AND `model_id` in %s" % (model_ids_str)
-	if deal_province_id != None:
-		sql += " AND `province_id` = %d" % (deal_province_id)
+			WHERE 1 AND `brand_id` = %d AND `series_id` = %d AND `model_id` = %d""" % (brand_id, series_id, model_id)
+	if province_id is not None:
+		sql += " AND `province_id` = %d" % (province_id)
 	sql += " AND `price` > 0 AND `card_time` > 0 AND `publish_time` > 0"
-	sql += " ORDER BY `card_time` ASC LIMIT 500"
+	sql += " GROUP BY `repeat_id` ORDER BY `publish_time` DESC LIMIT %d" % (limit)
+	# print sql
 	cursor.execute(sql)
 	results = cursor.fetchall()
 	dataSet = []

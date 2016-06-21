@@ -22,3 +22,11 @@ MYSQL_CONFIG = {
 is_debug = False
 if ENV == "local" or ENV == "test":
 	is_debug = True
+
+# feature config
+FEATURE_NAME_USAGE_TIME = "usage_time"
+FEATURE_NAME_CARD_TIME = "card_time"
+FEATURE_NAME = FEATURE_NAME_USAGE_TIME
+FILTER_FEATURE_BY_DISTINCE = True
+MIN_TRAIN_NUM = 8
+NUM_FEATURE = {"usage_time":2, "card_time":3}
