@@ -47,12 +47,20 @@ if __name__ == '__main__':
 	for i in range(len(DATA)):
 		data = DATA[i]
 		car_predict = CarPricePredict(data[0], data[1], data[2], data[3], data[4], data[5])
-		if car_predict is None:
-			continue
-		result = car_predict.predict()
-		print result
-		predict_Y.append(result[0])
+		result = int(car_predict.predict_by_replacement_cost_method())
+		predict_Y.append(result)
+		print result,
 	print(rgr.rss_error(DATA_Y, predict_Y))
+
+	# for i in range(len(DATA)):
+	# 	data = DATA[i]
+	# 	car_predict = CarPricePredict(data[0], data[1], data[2], data[3], data[4], data[5])
+	# 	if car_predict is None:
+	# 		continue
+	# 	result = car_predict.predict()
+	# 	print result
+	# 	predict_Y.append(result[0])
+	# print(rgr.rss_error(DATA_Y, predict_Y))
 
 	# allnet.update_brand_id()
 	# allnet.update_series_id() # 凯美瑞等车型有可能匹配错误，最好不要更新

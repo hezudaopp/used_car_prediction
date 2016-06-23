@@ -2,7 +2,8 @@
 
 import jieba
 from datetime import date
-import db
+import db_wcar
+import db_car_type
 
 DICT_FILENAME = "jieba_dict.txt"
 jieba.load_userdict(DICT_FILENAME)
@@ -18,7 +19,7 @@ count = None
 def get_count():
 	global count
 	if count is None:
-		count = db.count_of_allnet_car_source()
+		count = db_wcar.count_of_allnet_car_source()
 	return count
 
 def update_brand_id(page_size=100000):
@@ -28,7 +29,7 @@ def update_brand_id(page_size=100000):
 	while True:
 		print start, size
 		if start > size: break
-		db.update_brand_id_of_allnet_car_source(start, limit)
+		db_wcar.update_brand_id_of_allnet_car_source(start, limit)
 		start = start + limit
 
 def update_series_id(page_size=100000):
@@ -38,14 +39,14 @@ def update_series_id(page_size=100000):
 	while True:
 		print start, size
 		if start > size: break
-		db.update_series_id_of_allnet_car_source(start, limit)
+		db_wcar.update_series_id_of_allnet_car_source(start, limit)
 		start = start + limit
 
 empty_model_count = None
 def get_empty_model_count():
 	global empty_model_count
 	if empty_model_count is None:
-		empty_model_count = db.empty_model_count_of_allnet_car_source()
+		empty_model_count = db_wcar.empty_model_count_of_allnet_car_source()
 	return empty_model_count
 
 # update empty model id item of allnet_car_source
@@ -56,7 +57,7 @@ def update_null_model_id(start=0, page_size=100000):
 		print start, size
 		if start > size: break
 		# get empty model id items.
-		sale_cars = db.empty_model_of_allnet_car_source(start, limit)
+		sale_cars = db_wcar.empty_model_of_allnet_car_source(start, limit)
 		for sale_car in sale_cars:
 			car_sale_id = sale_car[0]
 			series_id = sale_car[1]
@@ -114,7 +115,7 @@ def update_null_model_id(start=0, page_size=100000):
 				keyword_dict[seg] = True
 			# print
 			# get models by series id and model year.
-			possible_models = db.car_type_models_of_series_id_and_model_year(series_id, model_year)
+			possible_models = db_car_type.car_type_models_of_series_id_and_model_year(series_id, model_year)
 			target_model = None
 			max_match_count = 0
 			for possible_model in possible_models:
@@ -139,5 +140,5 @@ def update_null_model_id(start=0, page_size=100000):
 					target_model = possible_model
 			# if target model is found, update model id by primary key.
 			if target_model is not None:
-				db.update_model_id_of_allnet_car_source(target_model[0], car_sale_id)
+				db_wcar.update_model_id_of_allnet_car_source(target_model[0], car_sale_id)
 		start = start + limit

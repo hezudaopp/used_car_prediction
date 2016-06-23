@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 import time
 import datetime
 import config
@@ -7,7 +9,16 @@ import scipy.stats
 
 NOW = int(time.time())
 
+"""get year info in timestamp"""
+def year_of_timestamp(timestamp_in_seconds=None):
+	return time.gmtime(timestamp_in_seconds).tm_year
+
+"""get month info in timestamp"""
+def month_of_timestamp(timestamp_in_seconds=None):
+	return time.gmtime(timestamp_in_seconds).tm_mon
+
 # month fomat example: "2009-06"
+# return timestamp in seconds.
 # if format error, return -1
 def convert_month_to_timestamp(month):
 	try:
