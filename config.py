@@ -1,4 +1,7 @@
-ENV = 'local'
+import env
+import logging
+
+VER = 0.3
 
 MYSQL_CONFIG = {
 	'local':{
@@ -10,44 +13,53 @@ MYSQL_CONFIG = {
 		'car_type':'car_type'
 	},
 	'test':{
-		'host':'192.168.5.32',
-		'user':'tangwj_tmp',
-		'passwd':'asdfjwier08',
-		'port':3307,
-		'wcar':'tangwj_tmp',
+		'host':'192.168.5.31',
+		'user':'w273cn',
+		'passwd':'w273cn_gototop_0591',
+		'port':3306,
+		'wcar':'wcar',
+		'car_type':'car_type'
+	},
+	'sim':{
+		'host':'192.168.9.111',
+		'user':'w273cn',
+		'passwd':'w273cn_gototop_0591',
+		'port':3306,
+		'wcar':'wcar',
+		'car_type':'car_type'
+	},
+	'online':{
+		'host':'192.168.9.111',
+		'user':'w273cn',
+		'passwd':'w273cn_gototop_0591',
+		'port':3306,
+		'wcar':'wcar',
 		'car_type':'car_type'
 	}
 }
 
-is_debug = False
-if ENV == "local" or ENV == "test":
-	is_debug = True
+LOGGING_LEVEL = {
+	'local':logging.DEBUG,
+	'test':logging.DEBUG,
+	'sim':logging.WARNING,
+	'online':logging.WARNING
+}
+logging.basicConfig(filename='/var/log/estimate.log', level=LOGGING_LEVEL[env.ENV])
 
 # feature config
-FEATURE_NAME_USAGE_TIME = "usage_time"
-FEATURE_NAME_CARD_TIME = "card_time"
-FEATURE_NAME = FEATURE_NAME_USAGE_TIME
-FILTER_FEATURE_BY_DISTINCE = True
-MIN_TRAIN_NUM = 8
-NUM_FEATURE = {"usage_time":2, "card_time":3}
+MIN_TRAIN_NUM = 50
 
-# default vehicles annual hedge rate
-HEDGE_RATE = {
-	1164:(1, 0.7316, 0.6705, 0.6142, 0.5545, 0.4865, 0.4123, 0.3292, 0.2781, 0.2186, 0.1483),
-	689:(1, 0.7081, 0.6279, 0.5651, 0.5076, 0.4373, 0.3486, 0.2648, 0.2094, 0.1668, 0.1238),
-	644:(1, 0.8138, 0.7505, 0.6766, 0.5948, 0.5226, 0.4579, 0.3861, 0.3219, 0.2574, 0.1986),
-	646:(1, 0.7605, 0.6751, 0.6029, 0.5268, 0.4576, 0.3988, 0.3230, 0.2714, 0.2318, 0.1720),
-	815:(1, 0.6836, 0.6037, 0.5387, 0.4754, 0.3847, 0.3340, 0.2659, 0.2075, 0.1574, 0.1068),
-	821:(1, 0.7430, 0.6748, 0.5932, 0.5121, 0.4395, 0.3753, 0.3154, 0.2589, 0.1933, 0.1434),
-	376:(1, 0.7993, 0.7275, 0.6486, 0.5577, 0.4830, 0.4244, 0.3537, 0.2875, 0.2425, 0.1800),
-	244:(1, 0.6777, 0.5919, 0.5216, 0.4649, 0.4109, 0.3491, 0.2778, 0.2133, 0.1720, 0.1277),
-	102:(1, 0.7653, 0.6528, 0.5890, 0.5331, 0.4664, 0.4020, 0.3476, 0.2986, 0.2502, 0.1857),
-	2117:(1, 0.7497, 0.6786, 0.6035, 0.5296, 0.4457, 0.3687, 0.2942, 0.2344, 0.1823, 0.1406),
-	595:(1, 0.7565, 0.6826, 0.6291, 0.5637, 0.4813, 0.4211, 0.3572, 0.3132, 0.2362, 0.1822),
-	433:(1, 0.7705, 0.6332, 0.5611, 0.4903, 0.4187, 0.3449, 0.3031, 0.2633, 0.2176, 0.1477),
-	736:(1, 0.7016, 0.5863, 0.5156, 0.4335, 0.3732, 0.3005, 0.2422, 0.1794, 0.1455, 0.1080),
-	1247:(1, 0.7303, 0.6201, 0.5037, 0.4487, 0.4023, 0.3533, 0.2855, 0.2303, 0.1851, 0.1256),
-	684:(1, 0.7234, 0.6151, 0.5425, 0.4820, 0.4240, 0.3724, 0.2863, 0.2290, 0.1847, 0.1371),
-}
-
+# used in replacement cost method to determine mileage factor 
 MAX_MILES_PER_MONTH = 10000.0
+
+# hedge rate infos
+MAX_HEDGE_RATES = [0.8474, 0.7909, 0.7157, 0.6407, 0.5767, 0.4921, 0.4445, 0.4054, 0.3467, 0.2728]
+MIN_HEDGE_RATES = [0.5852, 0.4959, 0.4257, 0.3565, 0.2944, 0.2385, 0.1353, 0.0965, 0.0778, 0.0538]
+AVG_HEDGE_RATES = [0.7413, 0.6487, 0.5660, 0.4894, 0.4208, 0.3512, 0.2773, 0.2213, 0.1762, 0.1377]
+
+
+RANDOM_FOREST_REGRESSOR_PICKLE = "random_forest_regressor.pkl"
+
+DEAL_DATA_RELOAD_PERIOD = 2592000.0
+
+MAX_ALLOWED_PERCENTAGE_ERROR = 0.2
